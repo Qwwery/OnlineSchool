@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %} Вход {% endblock %} {% block content
+%}
+<section class="card">
+  <h1>Вход</h1>
+
+  <form class="form" data-api-url="/log">
+    <p class="form-error" data-form-error hidden></p>
+
+    <label>
+      Email
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+
+    <label>
+      Пароль
+      <input
+        type="password"
+        name="password"
+        autocomplete="current-password"
+        required
+      />
+    </label>
+
+    <button type="submit">Войти</button>
+
+    <p class="form-success" data-form-success hidden></p>
+  </form>
+</section>
+{% endblock %}
