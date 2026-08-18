@@ -3,7 +3,7 @@ from .db_session import SqlAlchemyBase
 import bcrypt
 
 class User(SqlAlchemyBase):
-    __tablename__ = 'Users'
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=True)

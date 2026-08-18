@@ -3,13 +3,13 @@ from sqlalchemy import Column, Integer, String, Text, DateTime
 from datetime import datetime
 
 class Course(SqlAlchemyBase):
-    __tablename__ = 'Courses'
+    __tablename__ = 'courses'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String, nullable=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
     description = Column(Text)
-    image_url = Column(Text)
-    price = Column(Integer, nullable=True)
-    created_at = Column(DateTime, datetime.now())
-
+    price = Column(Integer, nullable=False)
+    image_url = Column(String)
+    created_at = Column(DateTime, default=datetime.now())
+    
 
