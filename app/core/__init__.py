@@ -1,1 +1,1 @@
-from .security import generat_session_id, get_session_expiry
+from .security import generate_session_id, get_session_expiry

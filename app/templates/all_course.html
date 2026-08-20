@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block title %}Все курсы{% endblock %} {% block
+content %}
+<section class="page">
+  <div class="page-header">
+    <h1>Все курсы</h1>
+    <!-- Опционально: кнопка добавления, если пользователь авторизован как админ/учитель -->
+    {% if user and (user.is_admin or user.is_teacher) %}
+    <a href="/add_course" class="btn-primary">+ Добавить курс</a>
+    {% endif %}
+  </div>
+
+  {% if courses %}
+  <!-- Используем класс .courses-grid из main.css -->
+  <div class="courses-grid">
+    {% for course in courses %}
+    <article class="card">
+      <!-- Обертка для картинки нужна, чтобы контролировать высоту -->
+      <div class="card__image-wrapper">
+        {% if course.image_path %}
+        <img
+          src="{{ course.image_path }}"
+          alt="{{ course.title }}"
+          class="card__image"
+        />
+        {% else %}
+        <div class="card__placeholder">Нет изображения</div>
+        {% endif %}
+      </div>
+
+      <div class="card__body">
+        <h3 class="card__title">{{ course.title }}</h3>
+
+        <!-- Описание обрезается до 3 строк благодаря CSS -->
+        <p class="card__description">{{ course.description }}</p>
+
+        <div class="card__footer">
+          <span class="card__price">{{ course.price }} ₽</span>
+
+          <!-- ВАЖНО: Ссылка ведет на реальный роут курса -->
+          <a href="/course/{{ course.id }}" class="card__link">Подробнее</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>Пока нет доступных курсов</h3>
+    <p>Мы работаем над новыми программами. Заходите позже!</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

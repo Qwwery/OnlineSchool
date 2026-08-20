@@ -1,11 +1,47 @@
-{% extends "base.html" %} {% block title %} Главная {% endblock %} {% block
-content %} {% for i in course %}
+{% extends "base.html" %} {% block title %}Главная — Онлайн школа{% endblock %}
+{% block content %}
 <section class="page">
-  <h1>Онлайн школа</h1>
+  <header class="page-header">
+    <h1>Онлайн школа</h1>
+    <p class="subtitle">Лучшие курсы от наших преподавателей</p>
+  </header>
 
-  <p>Базовая стартовая страница.</p>
+  {% if courses and courses|length > 0 %}
+  <div class="courses-grid">
+    {% for course in courses %}
+    <article class="card">
+      <div class="card__image-wrapper">
+        {% if course.image_path %}
+        <img
+          src="{{ course.image_path }}"
+          alt="{{ course.title }}"
+          class="card__image"
+        />
+        {% else %}
+        <div class="card__placeholder">Нет изображения</div>
+        {% endif %}
+      </div>
 
-  <p>Дальше здесь можно будет показать курсы, описание, кнопки и т.д.</p>
-  {{ i.name }}
+      <div class="card__body">
+        <h3 class="card__title">{{ course.title }}</h3>
+        <p class="card__description">{{ course.description }}</p>
+
+        <div class="card__footer">
+          <span class="card__price">{{ course.price }} ₽</span>
+          <a href="/course/{{ course.id }}" class="card__link">Подробнее →</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h2>Пока нет доступных курсов</h2>
+    <p>Скоро мы добавим новые программы обучения.</p>
+    {% if user and (user.is_admin or user.is_teacher) %}
+    <a href="/course/new" class="btn-primary">Добавить первый курс</a>
+    {% endif %}
+  </div>
+  {% endif %}
 </section>
-{% endfor %} {% endblock %}
+{% endblock %}

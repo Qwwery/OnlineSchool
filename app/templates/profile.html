@@ -1,0 +1,156 @@
+{% extends "base.html" %} {% block title %}Профиль: {{ user.name }}{% endblock
+%} {% block content %}
+<div class="page" style="max-width: 800px">
+  <!-- Шапка профиля (Аватар + Инфо) -->
+  <header
+    style="
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 32px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 24px;
+    "
+  >
+    <div style="flex-shrink: 0">
+      <!-- Аватарка (круг) -->
+      <div
+        style="
+          width: 120px;
+          height: 120px;
+          background: #e5e7eb;
+          border-radius: 50%;
+          overflow: hidden;
+          position: relative;
+        "
+      >
+        {% if user.avatar_url %}
+        <img
+          src="{{ user.avatar_url }}"
+          alt="{{ user.name }}"
+          style="width: 100%; height: 100%; object-fit: cover"
+        />
+        {% else %}
+        <!-- Заглушка с буквой -->
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 48px;
+            font-weight: bold;
+          "
+        >
+          {{ user.name[0]|upper }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div style="flex-grow: 1">
+      <h1 style="margin: 0 0 8px; color: #111827; font-size: 2rem">
+        {{ user.name }}
+      </h1>
+
+      {% if user.is_teacher %}
+      <span
+        style="
+          background: #dcfce7;
+          color: #065f46;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 600;
+        "
+        >Преподаватель</span
+      >
+      {% elif user.is_admin %}
+      <span
+        style="
+          background: #fef3c7;
+          color: #92400e;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 600;
+        "
+        >Администратор</span
+      >
+      {% else %}
+      <span style="color: #6b7280; font-size: 0.9rem">Студент</span>
+      {% endif %}
+
+      <p style="margin: 12px 0 0; color: #6b7280; line-height: 1.5">
+        {{ user.bio or "О себе: информации пока нет." }}
+      </p>
+
+      <!-- Статистика (опционально) -->
+      {% if courses_count %}
+      <div
+        style="
+          margin-top: 16px;
+          display: flex;
+          gap: 16px;
+          color: #374151;
+          font-size: 0.95rem;
+        "
+      >
+        <span><strong>{{ courses_count }}</strong> курсов</span>
+        <span><strong>5.0</strong> ⭐ (12 отзывов)</span>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Секция: Курсы этого преподавателя -->
+  <section>
+    <h2 style="margin-bottom: 1rem; color: #111827">Курсы преподавателя</h2>
+
+    {% if public_courses %}
+    <div class="courses-grid">
+      {% for course in public_courses %}
+      <article class="card">
+        <div class="card__image-wrapper">
+          {% if course.image_path %}
+          <img
+            src="{{ course.image_path }}"
+            alt="{{ course.title }}"
+            class="card__image"
+          />
+          {% else %}
+          <div class="card__placeholder">Нет фото</div>
+          {% endif %}
+        </div>
+        <div class="card__body">
+          <h3 class="card__title">{{ course.title }}</h3>
+          <p class="card__description">{{ course.description }}</p>
+          <div class="card__footer">
+            <span class="card__price">{{ course.price }} ₽</span>
+            <a href="/course/{{ course.id }}" class="card__link">Подробнее</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state" style="text-align: left; color: #6b7280">
+      <p>У этого преподавателя пока нет опубликованных курсов.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Кнопка "Связаться" или "Подписаться" (опционально) -->
+  {% if user.is_teacher and public_courses %}
+  <div
+    style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb"
+  >
+    <button class="btn-primary" style="width: 100%; max-width: 300px">
+      Написать преподавателю
+    </button>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -10,20 +10,18 @@ router = APIRouter()
 templates = Jinja2Templates(directory='app/templates')
 
 
-@router.get('/', response_class=HTMLResponse)
-def index(request: Request, db: Session = Depends(get_db)):
-    data = all_course(db)
-    return templates.TemplateResponse(
-        request=request,
-        name='index.html',
-        context= {
-            'course': data
-        })
-
-
-@router.get('/course/add', response_class=HTMLResponse, tags=['course'])
-async def get_add_course(request: Request):
+@router.get('/new', response_class=HTMLResponse, tags=['course'])
+async def get_new_course(request: Request):
     return templates.TemplateResponse(
         request=request,
         name='add_course.html'
     )
+
+@router.get('/', response_class=HTMLResponse, tags=['course'])
+def get_all_course(request: Request, db: Session = Depends(get_db)):
+    courses = all_course(db)
+    return templates.TemplateResponse(
+            request=request,
+            name='all_course.html',
+            context= {'courses': courses}
+        )

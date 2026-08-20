@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %}Регистрация{% endblock %} {% block
+content %}
+<div class="page" style="max-width: 420px">
+  <h1>Регистрация</h1>
+
+  <form data-api-url="/api/auth/register" class="form">
+    <!-- Блоки сообщений: только атрибуты, без лишних классов -->
+    <div data-form-error hidden></div>
+    <div data-form-success hidden></div>
+
+    <label for="name">
+      Имя
+      <input
+        type="text"
+        id="name"
+        name="name"
+        autocomplete="name"
+        required
+        placeholder="Иван Иванов"
+      />
+    </label>
+
+    <label for="email">
+      Email
+      <input
+        type="email"
+        id="email"
+        name="email"
+        autocomplete="email"
+        required
+        placeholder="ivan@example.com"
+      />
+    </label>
+
+    <label for="password">
+      Пароль
+      <input
+        type="password"
+        id="password"
+        name="password"
+        autocomplete="new-password"
+        minlength="6"
+        required
+        placeholder="Минимум 6 символов"
+      />
+    </label>
+
+    <button type="submit">Зарегистрироваться</button>
+  </form>
+
+  <!-- UX: Ссылка на вход, если пользователь уже зарегистрирован -->
+  <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #6b7280">
+    Уже есть аккаунт?
+    <a href="/login" class="card__link" style="font-weight: normal">Войти</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %} {% block title %}Мой профиль{% endblock %} {% block
+content %}
+<div class="page" style="max-width: 600px">
+  <!-- Сценарий 1: Пользователь авторизован -->
+  {% if user %}
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1rem;
+    "
+  >
+    <!-- Аватарка (заглушка, пока нет реальной картинки) -->
+    <div
+      style="
+        width: 80px;
+        height: 80px;
+        background: #e5e7eb;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        font-weight: bold;
+      "
+    >
+      {{ user.name[0]|upper }}
+    </div>
+
+    <div>
+      <h2 style="margin: 0; color: #111827">{{ user.name }}</h2>
+      <p style="margin: 4px 0 0; color: #6b7280">Email: {{ user.email }}</p>
+
+      {% if user.is_admin %}
+      <span
+        style="
+          margin-top: 8px;
+          display: inline-block;
+          background: #fef3c7;
+          color: #92400e;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+        "
+        >Администратор</span
+      >
+      {% elif user.is_teacher %}
+      <span
+        style="
+          margin-top: 8px;
+          display: inline-block;
+          background: #dcfce7;
+          color: #065f46;
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+        "
+        >Преподаватель</span
+      >
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Кнопка добавления курса (только для преподавателей и админов) -->
+  {% if user.is_teacher or user.is_admin %}
+  <a
+    href="/add_course"
+    class="btn-primary"
+    style="display: inline-block; margin-bottom: 2rem"
+    >+ Создать новый курс</a
+  >
+  {% endif %}
+
+  <!-- Секция "Мои курсы" (заглушка структуры) -->
+  <section>
+    <h3 style="margin-bottom: 1rem; color: #111827">Мои курсы</h3>
+    {% if my_courses %}
+    <div class="courses-grid" style="grid-template-columns: 1fr">
+      {% for course in my_courses %}
+      <article class="card">
+        <div class="card__image-wrapper">
+          {% if course.image_path %}
+          <img
+            src="{{ course.image_path }}"
+            alt="{{ course.title }}"
+            class="card__image"
+          />
+          {% else %}
+          <div class="card__placeholder">Нет фото</div>
+          {% endif %}
+        </div>
+        <div class="card__body">
+          <h3 class="card__title">{{ course.title }}</h3>
+          <p class="card__description">{{ course.description }}</p>
+          <div class="card__footer">
+            <span class="card__price">{{ course.price }} ₽</span>
+            <a href="/course/{{ course.id }}" class="card__link">Подробнее</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>У вас пока нет созданных курсов.</p>
+      {% if user.is_teacher or user.is_admin %}
+      <a href="/add_course" class="btn-primary">Создать первый курс</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Форма выхода (использует наш JS для красоты) -->
+  <form
+    action="/logout"
+    method="POST"
+    class="form"
+    style="margin-top: 3rem; border-top: 1px solid #e5e7eb; padding-top: 2rem"
+  >
+    <button
+      type="submit"
+      class="btn-logout"
+      style="
+        background: none;
+        border: none;
+        color: #b91c1c;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
+      "
+    >
+      Выйти из аккаунта
+    </button>
+  </form>
+
+  <!-- Сценарий 2: Пользователь НЕ авторизован -->
+  {% else %}
+  <div class="empty-state" style="text-align: center">
+    <h3>Требуется авторизация</h3>
+    <p>Чтобы просматривать свой профиль, войдите в систему.</p>
+    <br />
+    <a href="/login" class="btn-primary">Войти</a>
+    <span style="margin: 0 10px; color: #9ca3af">или</span>
+    <a href="/register" class="btn-primary" style="background-color: #9ca3af"
+      >Зарегистрироваться</a
+    >
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}Вход{% endblock %} {% block content
+%}
+<div class="page" style="max-width: 420px">
+  <h1>Вход в систему</h1>
+
+  <form data-api-url="/api/auth/login" class="form">
+    <!-- Блоки сообщений: без классов, только атрибуты. Классы добавятся при показе -->
+    <div data-form-error hidden></div>
+    <div data-form-success hidden></div>
+
+    <label for="email">
+      Email
+      <input
+        type="email"
+        id="email"
+        name="email"
+        autocomplete="email"
+        required
+        placeholder="name@example.com"
+      />
+    </label>
+
+    <label for="password">
+      Пароль
+      <input
+        type="password"
+        id="password"
+        name="password"
+        autocomplete="current-password"
+        required
+        minlength="6"
+      />
+    </label>
+
+    <button type="submit">Войти</button>
+  </form>
+
+  <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #6b7280">
+    Нет аккаунта?
+    <a href="/register" class="card__link" style="font-weight: normal"
+      >Зарегистрироваться</a
+    >
+  </p>
+</div>
+{% endblock %}

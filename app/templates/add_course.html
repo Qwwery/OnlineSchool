@@ -1,19 +1,55 @@
 {% extends "base.html" %} {% block title %}Создание курса{% endblock %} {% block
 content %}
-<h2>Создайте новый курс</h2>
-<form data-api-url="/course/add" method="post" action="/">
-  <label for="title">Название:</label>
-  <input type="text" id="title" name="title" required /><br /><br />
+<div class="page">
+  <h2>Создайте новый курс</h2>
 
-  <label for="description">Описание:</label>
-  <textarea id="description" name="description" required></textarea><br /><br />
+  <!-- ВАЖНО: Убрали action, оставили только data-api-url для JS -->
+  <form data-api-url="/api/course/add" class="form">
+    <!-- Блоки для сообщений (JS будет их заполнять) -->
+    <div data-form-error hidden class="form-error"></div>
+    <div data-form-success hidden class="form-success"></div>
 
-  <label for="price">Цена:</label>
-  <input type="number" id="price" name="price" step="1" required /><br /><br />
+    <label for="title">Название курса</label>
+    <input
+      type="text"
+      id="title"
+      name="title"
+      required
+      placeholder="Например: Основы Python"
+      maxlength="100"
+    />
 
-  <label for="image_path">Путь к изображению (опционально):</label>
-  <input type="text" id="image_path" name="image_path" /><br /><br />
+    <label for="description">Описание</label>
+    <textarea
+      id="description"
+      name="description"
+      required
+      rows="4"
+      placeholder="Расскажите подробнее о программе курса..."
+    ></textarea>
 
-  <button type="submit">Создать курс</button>
-</form>
+    <label for="price">Цена (₽)</label>
+    <input
+      type="number"
+      id="price"
+      name="price"
+      step="1"
+      min="0"
+      required
+      placeholder="0"
+    />
+
+    <label for="image_path">Ссылка на изображение (опционально)</label>
+    <input
+      type="url"
+      id="image_path"
+      name="image_path"
+      placeholder="https://example.com/image.jpg"
+      pattern="https?://.+|^$"
+      title="Введите корректный URL или оставьте пустым"
+    />
+
+    <button type="submit">Создать курс</button>
+  </form>
+</div>
 {% endblock %}

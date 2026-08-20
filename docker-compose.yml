@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  minio:
+    image: minio/minio
+    container_name: minio_local
+    ports:
+      - "9000:9000" # Порт для API (сюда будет стучаться boto3)
+      - "9001:9001" # Порт для веб-интерфейса (откроем в браузере)
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_SERVER_URL: http://localhost:9000 # Важно для генерации корректных ссылок
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  minio_data:
