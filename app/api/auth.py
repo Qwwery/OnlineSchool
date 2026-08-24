@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, Response, Request
 from sqlalchemy.orm import Session
 from app.models import get_db, User
-from app.schemas import SUser, SUserLog, SUserPubluc
+from app.schemas import SUserRegister, SUserLogin, SUserPubluc
 from app.crud import reg_user, log_user, set_cookie, del_cookie
 from app.dependencies import get_user_by_request_strict
 
 router = APIRouter()
 
 @router.post('/register')
-def post_register(response: Response, data: SUser, db: Session = Depends(get_db)):
+def post_register(response: Response, data: SUserRegister, db: Session = Depends(get_db)):
     user = reg_user(data, db)
     cooke = set_cookie(db, user)
 
@@ -24,7 +24,7 @@ def post_register(response: Response, data: SUser, db: Session = Depends(get_db)
     return {'ok': True}
 
 @router.post('/login')
-def post_login(response: Response, data: SUserLog, db: Session = Depends(get_db)):
+def post_login(response: Response, data: SUserLogin, db: Session = Depends(get_db)):
     user = log_user(data, db)
     cooke = set_cookie(db, user)
 

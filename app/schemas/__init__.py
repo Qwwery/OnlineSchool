@@ -1,2 +1,3 @@
 from .course import SCourse
-from .user import SUser, SUserLog, SUserPubluc
+from .user import SUserRegister, SUserLogin, SUserPubluc
+from .video import SVideoLinkResponse, SVideoUploadResponse

@@ -1,14 +1,12 @@
 from pydantic import BaseModel, ConfigDict
 
 
-class SUser(BaseModel):
+class SUserRegister(BaseModel):
     name: str
     email: str
     password: str
-    is_admin: bool = False
-    is_teacher: bool = False
 
-class SUserLog(BaseModel):
+class SUserLogin(BaseModel):
     email: str
     password: str
 

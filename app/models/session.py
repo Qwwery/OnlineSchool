@@ -1,10 +1,10 @@
 from app.models import SqlAlchemyBase
 from sqlalchemy import Column, String, DateTime, Integer, ForeignKey
-import datetime
+from datetime import datetime, timezone
 
 class Session(SqlAlchemyBase):
     __tablename__ = 'sessions'
 
     session_id = Column(String, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.now)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))

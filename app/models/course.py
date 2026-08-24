@@ -1,6 +1,6 @@
 from .db_session import SqlAlchemyBase
 from sqlalchemy import Column, Integer, String, Text, DateTime
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Course(SqlAlchemyBase):
     __tablename__ = 'courses'
@@ -10,6 +10,6 @@ class Course(SqlAlchemyBase):
     description = Column(Text)
     price = Column(Integer, nullable=False)
     image_url = Column(String)
-    created_at = Column(DateTime, default=datetime.now())
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
     
 
