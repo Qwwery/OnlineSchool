@@ -6,7 +6,7 @@ ALLOWED_EXTENSION = {".mp4", ".mov", ".avi", ".mkv", ".webm"}
 
 def generate_s3(user_id: int, filename: str) -> str:
     ext = '.' + filename.rsplit('.', 1)[-1].lower() if '.' in filename else ""
-    unique_filename = f"{uuid.uuid4().hex()}{ext}"
+    unique_filename = f"{uuid.uuid4().hex}{ext}"
     return f"videos/{user_id}/{unique_filename}"
 
 def validate_file_extension(filename: str) -> bool:

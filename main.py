@@ -26,9 +26,9 @@ app.mount(
 )
 app.include_router(router=user_router, tags=['users'])
 app.include_router(router=auth_router, tags=['auth'])
-app.include_router(router=course_router, prefix='/course', tags=['auth'])
+app.include_router(router=course_router, prefix='/course', tags=['course'])
 app.include_router(router=main_router, tags=['main'])
 
 app.include_router(router=api_auth_router, prefix='/api/auth', tags=['auth'])
 app.include_router(router=api_course_router, prefix='/api/course', tags=['course'])
-app.include_router(router=api_video_router, prefix='api/video', tags=['video'])
+app.include_router(router=api_video_router, prefix='/api/video', tags=['video'])

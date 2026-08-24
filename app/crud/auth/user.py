@@ -1,5 +1,5 @@
 from app.models import User
-from app.schemas import SUser
+from app.schemas import SUserRegister, SUserLogin
 
 
 from sqlalchemy.orm import Session
@@ -7,7 +7,7 @@ import bcrypt
 
 from fastapi import HTTPException # Нет, не придумал как лучше. Плевать на единую ответственность
 
-def reg_user(data: SUser, db: Session) -> User:
+def reg_user(data: SUserRegister, db: Session) -> User:
     existing_user = db.query(User).filter(User.email == data.email).first()
     if existing_user:
         raise HTTPException(status_code=409, detail='Пользователь с такой почтой уже существует')
@@ -25,7 +25,7 @@ def reg_user(data: SUser, db: Session) -> User:
     db.refresh(db_user)
     return db_user
 
-def log_user(data: SUser, db: Session) -> User:
+def log_user(data: SUserLogin, db: Session) -> User:
     existing_user = db.query(User).filter(User.email == data.email).first()
     if not existing_user or not existing_user.check_password(data.password):
         raise HTTPException(status_code=401, detail='Неверный email или пароль')

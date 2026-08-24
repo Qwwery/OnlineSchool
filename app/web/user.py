@@ -10,7 +10,7 @@ from app.crud import get_user_by_id
 templates = Jinja2Templates(directory='app/templates')
 router = APIRouter()
 
-@router.get('/profile', response_class=HTMLResponse, tags=['user'])
+@router.get('/profile', response_class=HTMLResponse)
 async def get_profile(request: Request, user: User = Depends(get_user_by_request_strict)):
     return templates.TemplateResponse(
         request=request,
@@ -20,7 +20,7 @@ async def get_profile(request: Request, user: User = Depends(get_user_by_request
         }
     )
 
-@router.get('/profile/{profile_id}', response_class=HTMLResponse, tags=['user'])
+@router.get('/profile/{profile_id}', response_class=HTMLResponse)
 def get_profile_by_id(profile_id: int, request: Request, user: User = Depends(get_user_by_request_strict), db: Session = Depends(get_db)):
     sear_user = get_user_by_id(profile_id, db)
     if not sear_user:

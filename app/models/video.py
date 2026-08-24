@@ -9,5 +9,6 @@ class Video(SqlAlchemyBase):
     key = Column(String, nullable=False, unique=True)
     origin_name = Column(String, nullable=False)
     size_bytes = Column(Integer, default=0)
-    uploaded_by_user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
+    uploaded_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
