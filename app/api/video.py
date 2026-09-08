@@ -28,12 +28,12 @@ def upload_video(
 
 
     file_stream = file.file # Это для BinaryIO
-    contetn_type = file.content_type or "video/mp4"
+    content_type = file.content_type or "video/mp4"
     filename = file.filename    
 
     s3_key = generate_s3(current_user.id, filename)
     try:
-        upload_to_s3(file_stream, s3_key, contetn_type)
+        upload_to_s3(file_stream, s3_key, content_type)
     except Exception as e:
         raise HTTPException(500, detail="Ошибка загрузки")
 
