@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.models import get_db, User
 from app.crud import get_user_by_session_id
 
-def get_user_by_request_strict(request: Request, db: Session = Depends(get_db)) -> User:
+def get_user_by_request_strict(request: Request, db: Session = Depends(get_db)) -> User: # Строго т.к. нужен строгое объяснение отказа доступа
     session_id = request.cookies.get('session_id')
 
     if not session_id:
@@ -15,7 +15,7 @@ def get_user_by_request_strict(request: Request, db: Session = Depends(get_db)) 
 
     return user
 
-def get_user_by_request_optional(request: Request, db: Session = Depends(get_db)) -> User | None:
+def get_user_by_request_optional(request: Request, db: Session = Depends(get_db)) -> User | None: # Не строго, т.к. не нужно объяснять отказ
     session = request.cookies.get('session_id')
 
     if not session:

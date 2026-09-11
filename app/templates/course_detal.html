@@ -1,0 +1,128 @@
+{% extends "base.html" %} {% block title %} Курс {% endblock %} {% block content
+%}
+<div
+  class="course-page"
+  id="coursePage"
+  data-course-id="{{ course_id }}"
+  data-user-id="{% if user is defined and user %}{{ user.id }}{% endif %}"
+>
+  <div class="course-loading" id="courseLoading">Загрузка курса...</div>
+
+  <div class="course-error" id="courseError" hidden></div>
+
+  <div class="course-layout" id="courseLayout" hidden>
+    <section class="course-player">
+      <div class="player-wrapper">
+        <video id="videoPlayer" controls controlslist="nodownload" hidden>
+          Ваш браузер не поддерживает видео.
+        </video>
+
+        <div class="player-placeholder" id="playerPlaceholder">
+          Выберите урок для просмотра
+        </div>
+      </div>
+
+      <div class="current-lesson-info">
+        <h2 id="currentLessonTitle">Курс</h2>
+        <p id="currentLessonDescription">Выберите урок из списка</p>
+      </div>
+    </section>
+
+    <aside class="course-sidebar">
+      <div class="course-info">
+        <h1 id="courseTitle"></h1>
+        <p class="course-author">Автор: <strong>{{ author_name }}</strong></p>
+        <p id="courseDescription"></p>
+        <!-- Кнопка покупки. Скрывается через JS если юзер автор или уже купил -->
+        <div id="buyBlock" hidden>
+          <button type="button" id="buyCourseBtn" class="btn-primary btn-buy">
+            Купить курс — <span id="buyPrice">0</span> ₽
+          </button>
+        </div>
+
+        <!-- Модалка выбора способа оплаты -->
+        <div id="paymentModal" class="modal" hidden>
+          <div class="modal__backdrop" data-close="1"></div>
+          <div class="modal__dialog" role="dialog" aria-modal="true">
+            <h3 class="modal__title">Оплата курса</h3>
+            <p class="modal__subtitle">
+              Курс: <strong id="modalCourseTitle"></strong>
+            </p>
+            <p class="modal__subtitle">
+              К оплате: <strong id="modalPrice"></strong> ₽
+            </p>
+
+            <div class="payment-methods">
+              <label
+                class="payment-method payment-method--disabled"
+                title="Скоро"
+              >
+                <input type="radio" name="payment" value="sbp" disabled />
+                <span class="payment-method__label">
+                  СБП <small>(скоро)</small>
+                </span>
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment" value="balance" checked />
+                <span class="payment-method__label">Счёт на сайте</span>
+              </label>
+            </div>
+
+            <div id="paymentError" class="form-error" hidden></div>
+            <div id="paymentSuccess" class="form-success" hidden></div>
+
+            <div class="modal__actions">
+              <button type="button" class="btn-secondary" data-close="1">
+                Отмена
+              </button>
+              <button type="button" id="confirmPaymentBtn" class="btn-primary">
+                Оплатить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-management" id="courseManagement" hidden>
+        <h3>Управление курсом</h3>
+
+        <button type="button" class="btn-primary" id="showUploadFormBtn">
+          Добавить видео
+        </button>
+
+        <form class="upload-form" id="uploadVideoForm" hidden>
+          <label>
+            Название урока
+            <input type="text" name="title" required />
+          </label>
+
+          <label>
+            Видеофайл
+            <input type="file" name="video_file" accept="video/*" required />
+          </label>
+
+          <div class="upload-actions">
+            <button type="submit" class="btn-primary">Загрузить</button>
+
+            <button type="button" class="btn-secondary" id="cancelUploadBtn">
+              Отмена
+            </button>
+          </div>
+
+          <div class="upload-status" id="uploadStatus" hidden></div>
+        </form>
+      </div>
+
+      <div class="lessons-list">
+        <h3>Уроки</h3>
+
+        <ul class="lessons" id="lessonsList"></ul>
+
+        <p class="no-lessons" id="noLessons" hidden>В курсе пока нет уроков.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="{{ url_for('static', path='js/course.js') }}" defer></script>
+{% endblock %}

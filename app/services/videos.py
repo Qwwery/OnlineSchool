@@ -29,5 +29,5 @@ def generate_presigned_url(s3_key: str) -> str:
     return s3_client.generate_presigned_url(
         ClientMethod="get_object",
         Params={"Bucket": settings.S3_BUCKET_NAME, "Key": s3_key},
-        ExpitesIn=settings.PRESIGNED_URL_EXPIRES,
+        ExpiresIn=settings.PRESIGNED_URL_EXPIRES,
     )

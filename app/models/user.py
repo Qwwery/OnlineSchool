@@ -7,6 +7,7 @@ class User(SqlAlchemyBase):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
+    balance = Column(Integer, default=0)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
     is_admin = Column(Boolean, default=False)

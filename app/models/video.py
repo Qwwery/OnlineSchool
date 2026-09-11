@@ -6,6 +6,7 @@ class Video(SqlAlchemyBase):
     __tablename__ = 'videos'
 
     id = Column(Integer, primary_key=True, index=True)
+    id_at_course = Column(Integer, nullable=False)
     key = Column(String, nullable=False, unique=True)
     origin_name = Column(String, nullable=False)
     size_bytes = Column(Integer, default=0)

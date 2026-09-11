@@ -13,7 +13,7 @@ router = APIRouter()
 ALLOWED_EXTENSIONS = {'.mp4', '.mov', '.avi', '.mkv', '.webm'}
 MAX_SIZE_BYTES = 500 * 1024 * 1024
 
-@router.post('api/upload', response_model=SVideoUploadResponse, status_code=status.HTTP_201_CREATED)
+@router.post('/upload', response_model=SVideoUploadResponse, status_code=status.HTTP_201_CREATED)
 def upload_video(
     file: UploadFile = File(...),
     course_id: int = Form(...),
@@ -43,17 +43,19 @@ def upload_video(
 @router.get('/{video_id}/link')
 def get_video_link(video_id: int, db: Session = Depends(get_db), current_user = Depends(get_user_by_request_strict)):
     video = get_video_by_id(db, video_id)
-    access = user_hav_access_course(db, current_user.id, video_id)
-
+    access = user_hav_access_course(db, current_user.id, video.course_id)
     if not video or not access:
         raise HTTPException(404, detail="Видео не найдено, или доступ запрещен")
 
     try:
         url = generate_presigned_url(video.key)
     except Exception as e:
+        print(e)
         raise HTTPException(500, detail="Ошибка генерации URL")
 
     return {'url': url, "expires_in": settings.PRESIGNED_URL_EXPIRES}
 
-
+@router.delete('/{video_id}/delete')
+def delete_video(video_id: int, db: Session = Depends(get_db), current_user = Depends(get_user_by_request_strict)):
+    pass
 

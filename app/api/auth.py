@@ -24,7 +24,7 @@ def post_register(response: Response, data: SUserRegister, db: Session = Depends
     return {'ok': True}
 
 @router.post('/login')
-def post_login(response: Response, data: SUserLogin, db: Session = Depends(get_db)):
+def post_login(response: Response, data: SUserLogin, db: Session = Depends(get_db)) -> SUserPubluc:
     user = log_user(data, db)
     cooke = set_cookie(db, user)
 

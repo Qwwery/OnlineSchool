@@ -12,13 +12,15 @@ def global_init(db_file: str):
     if not db_file or not db_file.strip():
         raise Exception("Нет файла")
 
-    conn_str = f'sqlite:///{db_file.strip()}?check_same_thread=False'
-    engine = create_engine(conn_str, echo=False)
+    clean_url = db_file.strip()
+    connect_args = {}
+    if clean_url.startswith("sqlite"):
+        connect_args = {"check_same_thread": False}
+
+    engine = create_engine(clean_url, echo=False, connect_args=connect_args)
     __factory = sessionmaker(bind=engine)
 
     from . import __all_models 
-
-    SqlAlchemyBase.metadata.create_all(engine)
 
 
 def create_session() -> Session:

@@ -22,7 +22,7 @@ async def get_profile(request: Request, user: User = Depends(get_user_by_request
 
 @router.get('/profile/{profile_id}', response_class=HTMLResponse)
 def get_profile_by_id(profile_id: int, request: Request, user: User = Depends(get_user_by_request_strict), db: Session = Depends(get_db)):
-    sear_user = get_user_by_id(profile_id, db)
+    sear_user = get_user_by_id(db, profile_id)
     if not sear_user:
         raise HTTPException(404, 'Пользователь не найден')
     return templates.TemplateResponse(

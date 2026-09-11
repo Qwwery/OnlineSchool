@@ -162,3 +162,302 @@ document.addEventListener("DOMContentLoaded", () => {
       : button.dataset.defaultText || "Отправить";
   }
 });
+
+(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const forms = document.querySelectorAll("form[data-api-url]");
+    forms.forEach((form) => initForm(form));
+
+    const lessons = document.querySelectorAll(".lesson-item[data-video-id]");
+    lessons.forEach((lesson) => initLesson(lesson));
+  });
+
+  function initLesson(lesson) {
+    lesson.addEventListener("click", () => {
+      loadVideo(lesson);
+    });
+  }
+
+  async function loadVideo(lesson) {
+    const videoId = lesson.dataset.videoId;
+    const videoPlayer = document.getElementById("videoPlayer");
+    const placeholder = document.getElementById("playerPlaceholder");
+    const errorMessage = document.getElementById("errorMessage");
+    const loadingIndicator = lesson.querySelector(".lesson-loading");
+    const currentLessonTitle = document.getElementById("currentLessonTitle");
+    const currentLessonDescription = document.getElementById(
+      "currentLessonDescription",
+    );
+    const lessonTitle = lesson.querySelector(".lesson-title").textContent;
+
+    clearError(errorMessage);
+    showLoading(loadingIndicator, true);
+
+    try {
+      const response = await fetch(`/api/video/${videoId}/link`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+        credentials: "same-origin",
+      });
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (!response.ok) {
+        showError(errorMessage, getErrorMessage(data, response.status));
+        return;
+      }
+
+      if (!data.url) {
+        showError(errorMessage, "Не удалось получить ссылку на видео");
+        return;
+      }
+
+      videoPlayer.src = data.url;
+      videoPlayer.load();
+
+      placeholder.hidden = true;
+      videoPlayer.style.display = "block";
+
+      currentLessonTitle.textContent = lessonTitle;
+      currentLessonDescription.textContent = "Воспроизведение урока";
+
+      videoPlayer.play().catch((err) => {
+        console.warn("Автовоспроизведение заблокировано:", err);
+      });
+
+      highlightActiveLesson(lesson);
+    } catch (err) {
+      showError(
+        errorMessage,
+        "Не удалось загрузить видео. Проверьте подключение к интернету.",
+      );
+      console.error(err);
+    } finally {
+      showLoading(loadingIndicator, false);
+    }
+  }
+
+  function highlightActiveLesson(activeLesson) {
+    const allLessons = document.querySelectorAll(".lesson-item");
+    allLessons.forEach((lesson) => {
+      lesson.classList.remove("active");
+    });
+    activeLesson.classList.add("active");
+  }
+
+  function showLoading(indicator, isLoading) {
+    if (indicator) {
+      indicator.hidden = !isLoading;
+    }
+  }
+
+  function showError(errorBox, message) {
+    if (!errorBox) {
+      console.error(message);
+      return;
+    }
+
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  function clearError(errorBox) {
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.hidden = true;
+    }
+  }
+
+  function getErrorMessage(data, status) {
+    if (!data) {
+      return `Ошибка сервера: ${status}`;
+    }
+
+    if (typeof data.detail === "string") {
+      return data.detail;
+    }
+
+    if (Array.isArray(data.detail)) {
+      return data.detail.map((item) => item.msg).join(" ");
+    }
+
+    if (data.message) {
+      return data.message;
+    }
+
+    return `Ошибка: ${status}`;
+  }
+
+  function initForm(form) {
+    const button = form.querySelector("button[type='submit']");
+
+    if (button) {
+      button.dataset.defaultText = button.textContent.trim();
+    }
+
+    form.addEventListener("submit", (event) => {
+      onSubmit(event, form);
+    });
+  }
+
+  async function onSubmit(event, form) {
+    event.preventDefault();
+
+    const url = form.dataset.apiUrl;
+    const redirectAfter = form.dataset.redirectAfter;
+
+    const errorBox = form.querySelector("[data-form-error]");
+    const successBox = form.querySelector("[data-form-success]");
+    const button = form.querySelector("button[type='submit']");
+
+    const payload = getPayload(form);
+
+    clearMessages(errorBox, successBox);
+    setLoading(button, true);
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(payload),
+      });
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
+      if (!response.ok) {
+        showErrorForm(errorBox, getErrorMessage(data, response.status));
+        return;
+      }
+
+      showSuccessForm(successBox, getSuccessMessage(url, data));
+
+      if (redirectAfter) {
+        setTimeout(() => {
+          window.location.href = redirectAfter;
+        }, 500);
+      } else {
+        form.reset();
+      }
+    } catch {
+      showErrorForm(
+        errorBox,
+        "Не удалось отправить запрос. Проверь, что сервер запущен.",
+      );
+    } finally {
+      setLoading(button, false);
+    }
+  }
+
+  function getPayload(form) {
+    const payload = {};
+    const formData = new FormData(form);
+
+    for (const [key, value] of formData.entries()) {
+      const field = form.elements[key];
+
+      if (field && field.type === "checkbox") {
+        payload[key] = field.checked;
+        continue;
+      }
+
+      if (field && field.type === "number") {
+        payload[key] = value === "" ? null : Number(value);
+        continue;
+      }
+
+      if (field && field.dataset.empty === "null" && value === "") {
+        payload[key] = null;
+        continue;
+      }
+
+      payload[key] = value;
+    }
+
+    return payload;
+  }
+
+  function getSuccessMessage(url, data) {
+    if (data && data.message) {
+      return data.message;
+    }
+
+    if (url === "/api/auth/register") {
+      return "Регистрация прошла успешно.";
+    }
+
+    if (url === "/api/auth/login") {
+      return "Вход выполнен.";
+    }
+
+    if (url === "/api/auth/logout") {
+      return "Вы вышли из аккаунта.";
+    }
+
+    if (url === "/api/course/add") {
+      return "Курс создан.";
+    }
+
+    return "Запрос выполнен.";
+  }
+
+  function showErrorForm(errorBox, message) {
+    if (!errorBox) {
+      console.error(message);
+      return;
+    }
+
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  function showSuccessForm(successBox, message) {
+    if (!successBox) {
+      return;
+    }
+
+    successBox.textContent = message;
+    successBox.hidden = false;
+  }
+
+  function clearMessages(errorBox, successBox) {
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.hidden = true;
+    }
+
+    if (successBox) {
+      successBox.textContent = "";
+      successBox.hidden = true;
+    }
+  }
+
+  function setLoading(button, isLoading) {
+    if (!button) {
+      return;
+    }
+
+    button.disabled = isLoading;
+
+    button.textContent = isLoading
+      ? "Отправка..."
+      : button.dataset.defaultText || "Отправить";
+  }
+})();

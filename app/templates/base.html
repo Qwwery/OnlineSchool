@@ -23,18 +23,16 @@
           <a href="/course/">Все курсы</a>
 
           {% if user %}
-          <!-- Профиль пользователя (текущий) -->
           <a href="/profile">{{ user.name }}</a>
+          <span class="header__balance"
+            >{{ "%.2f"|format(user.balance or 0) }} ₽</span
+          >
 
-          <!-- Кнопка добавления курса: видна только админам и учителям -->
           {% if user.is_admin or user.is_teacher %}
           <a href="/course/new" class="btn-add-course">+ Добавить курс</a>
           {% endif %}
 
-          <!-- Логаут (POST запрос обычно обрабатывается формой или JS, но ссылка может вести на страницу подтверждения или сразу триггерить logout через JS) -->
-          <!-- В твоем API logout это POST на /api/auth/logout. 
-                 Часто в шаблонах делают форму внутри ссылки или отдельный endpoint для GET /logout -->
-          <form action="/api/auth/logout" method="POST" style="display: inline">
+          <form action="/api/auth/logout" method="post" style="display: inline">
             <button type="submit" class="btn-logout">Выход</button>
           </form>
           {% else %}

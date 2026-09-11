@@ -1,3 +1,7 @@
+[hidden] {
+  display: none !important;
+}
+
 /* --- Reset & Base --- */
 * {
   box-sizing: border-box;
@@ -317,4 +321,468 @@ button:disabled {
   background: #f0fdf4;
   color: #15803d;
   border-color: #bbf7d0;
+}
+
+.player-container {
+  display: grid;
+  gap: 20px;
+}
+
+.player-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.current-lesson-info {
+  padding: 16px 0;
+}
+
+.current-lesson-info h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.current-lesson-info p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.course-sidebar {
+  display: grid;
+  gap: 24px;
+}
+
+.course-info {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.course-info h1 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.course-description {
+  margin: 0;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.lessons-list {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.lessons-list h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.lessons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.lesson-item {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: grid;
+  gap: 8px;
+}
+
+.lesson-item:hover {
+  background: #f9fafb;
+  border-color: #2563eb;
+}
+
+.lesson-item.active {
+  background: #eff6ff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.course-loading {
+  text-align: center;
+  padding: 60px 0;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.course-error {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.course-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .course-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.course-player {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.player-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.player-wrapper video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.player-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.current-lesson-info {
+  margin-top: 16px;
+}
+
+.current-lesson-info h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.current-lesson-info p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.course-sidebar {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.course-info {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.course-info h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.course-info p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.lessons-list {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.lessons-list h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.lessons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.lesson-item {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.lesson-item:hover {
+  background: #f9fafb;
+  border-color: #2563eb;
+}
+
+.lesson-item.active {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lesson-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lesson-title {
+  font-weight: 500;
+  color: #111827;
+}
+
+.lesson-loading {
+  margin-top: 6px;
+  margin-left: 36px;
+  font-size: 13px;
+  color: #2563eb;
+}
+
+.no-lessons {
+  color: #6b7280;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.course-management {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.course-management h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
+}
+
+.upload-form {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #d1d5db;
+}
+
+.upload-status {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-size: 14px;
+}
+
+.upload-status.success {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.upload-status.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.lesson-actions {
+  margin-top: 6px;
+  padding-left: 38px;
+}
+
+.btn-delete-video {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-delete-video:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+/* Кнопка покупки */
+.btn-buy {
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* Модалка */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+}
+.modal__dialog {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(440px, calc(100% - 32px));
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+.modal__title {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+.modal__subtitle {
+  margin: 0 0 12px;
+  color: #374151;
+}
+.modal__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+/* Способы оплаты */
+.payment-methods {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.payment-method:hover {
+  border-color: #2563eb;
+  background: #f9fafb;
+}
+.payment-method input:checked + .payment-method__label {
+  color: #2563eb;
+  font-weight: 600;
+}
+.payment-method--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.payment-method--disabled:hover {
+  border-color: #e5e7eb;
+  background: transparent;
+}
+
+.header__balance {
+  font-size: 14px;
+  font-weight: 600;
+  color: #059669;
+  padding: 4px 10px;
+  background: #ecfdf5;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.course-author {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #6b7280;
 }

@@ -1,1 +1,2 @@
 from .auth import get_user_by_request_strict, get_user_by_request_optional
+from .course import get_course_by_request_strict

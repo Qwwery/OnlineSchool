@@ -5,7 +5,7 @@ from app.schemas import SUserRegister, SUserLogin
 from sqlalchemy.orm import Session
 import bcrypt
 
-from fastapi import HTTPException # Нет, не придумал как лучше. Плевать на единую ответственность
+from fastapi import HTTPException
 
 def reg_user(data: SUserRegister, db: Session) -> User:
     existing_user = db.query(User).filter(User.email == data.email).first()
@@ -30,7 +30,3 @@ def log_user(data: SUserLogin, db: Session) -> User:
     if not existing_user or not existing_user.check_password(data.password):
         raise HTTPException(status_code=401, detail='Неверный email или пароль')
     return existing_user
-
-def get_user_by_id(id: int, db: Session):
-    user = db.query(User).filter(User.id == id).first()
-    return user
