@@ -50,6 +50,7 @@
       const data = await fetchCourse();
       const course = data.course || null;
       const videos = data.videos || [];
+      const access = data.access || null;
 
       isAuthor = Boolean(
         currentUserId &&
@@ -60,7 +61,7 @@
       renderCourse(course);
       renderManagement();
       bindBuyEvents();
-      renderBuyBlock(course);
+      renderBuyBlock(course, access);
       renderVideos(videos);
       showLayout();
     } catch (error) {
@@ -344,7 +345,7 @@
 
     try {
       const response = await fetch(`/api/video/${videoId}/delete`, {
-        method: "POST",
+        method: "DELETE",
         headers: {
           Accept: "application/json",
         },
@@ -503,13 +504,15 @@
   }
   let currentCourse = null;
 
-  function renderBuyBlock(course) {
+  function renderBuyBlock(course, access) {
     currentCourse = course;
     if (!elements.buyBlock || !course) return;
+    console.log(access);
 
     // Не показываем, если юзер — автор или уже купил курс
-    const alreadyBought = Boolean(course.access);
-    if (isAuthor || !alreadyBought) {
+    const alreadyBought = Boolean(access);
+    console.log(alreadyBought);
+    if (isAuthor || alreadyBought) {
       hide(elements.buyBlock);
       return;
     }

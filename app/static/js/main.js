@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return "Вы вышли из аккаунта.";
     }
 
-    if (url === "/api/course/add") {
+    if (url === "/api/course/new") {
       return "Курс создан.";
     }
 

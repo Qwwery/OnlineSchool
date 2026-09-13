@@ -1,4 +1,4 @@
-from app.schemas import SCourse
+from app.schemas import SCourse, SUserPubluc
 from app.models import Course, get_db, User
 from app.crud import all_course, new_course, get_videos_by_course_id, delete_course, get_user_by_course_id
 from app.dependencies import get_user_by_request_strict, get_course_by_request_strict
@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-@router.post('/add')
+@router.post('/new')
 def post_course(course: SCourse, db: Session = Depends(get_db), curent_user: User = Depends(get_user_by_request_strict)):
     result = new_course(db, course, curent_user.id)
     return result
@@ -21,7 +21,7 @@ def get_course(course_id: int, db: Session = Depends(get_db), curent_user: User 
     videos_in_course = get_videos_by_course_id(db, course_id)
     author = get_user_by_course_id(db, course_id)
     
-    return {'course': course, 'videos': videos_in_course, 'access': access, 'author': author}
+    return {'course': course, 'videos': videos_in_course, 'access': access, 'author': SUserPubluc.model_validate(author)}
 
 @router.delete('/{course_id}/delete')
 def delete_course(course_id: int, db: Session = Depends(get_db), curent_user: User = Depends(get_user_by_request_strict)):

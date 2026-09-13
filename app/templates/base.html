@@ -32,9 +32,14 @@
           <a href="/course/new" class="btn-add-course">+ Добавить курс</a>
           {% endif %}
 
-          <form action="/api/auth/logout" method="post" style="display: inline">
-            <button type="submit" class="btn-logout">Выход</button>
+          <form id="logoutForm" class="header__logout">
+            <button type="submit" class="btn-logout">Выйти</button>
           </form>
+
+          <div id="logoutToast" class="logout-toast" hidden>
+            Вы вышли из аккаунта
+          </div>
+
           {% else %}
           <a href="/login">Вход</a>
           <a href="/register">Регистрация</a>
@@ -49,5 +54,6 @@
 
     <!-- Скрипты в конце body с defer -->
     <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/logout.js" defer></script>
   </body>
 </html>

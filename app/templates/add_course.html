@@ -1,11 +1,9 @@
-{% extends "base.html" %} {% block title %}Создание курса{% endblock %} {% block
-content %}
+{% extends "base.html" %} {% block title %} Создание курса {% endblock %} {%
+block content %}
 <div class="page">
   <h2>Создайте новый курс</h2>
 
-  <!-- ВАЖНО: Убрали action, оставили только data-api-url для JS -->
-  <form data-api-url="/api/course/add" class="form">
-    <!-- Блоки для сообщений (JS будет их заполнять) -->
+  <form id="addCourseForm" class="form">
     <div data-form-error hidden class="form-error"></div>
     <div data-form-success hidden class="form-success"></div>
 
@@ -45,11 +43,11 @@ content %}
       id="image_path"
       name="image_path"
       placeholder="https://example.com/image.jpg"
-      pattern="https?://.+|^$"
-      title="Введите корректный URL или оставьте пустым"
     />
 
     <button type="submit">Создать курс</button>
   </form>
 </div>
+
+<script src="{{ url_for('static', path='js/add_course.js') }}" defer></script>
 {% endblock %}
