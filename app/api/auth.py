@@ -4,6 +4,8 @@ from app.models import get_db, User
 from app.schemas import SUserRegister, SUserLogin, SUserPubluc
 from app.crud import reg_user, log_user, set_cookie, del_cookie
 from app.dependencies import get_user_by_request_strict
+from app.core import SESSION_MAX_AGE_SECONDS
+from datetime import timezone
 
 router = APIRouter()
 
@@ -15,7 +17,8 @@ def post_register(response: Response, data: SUserRegister, db: Session = Depends
     response.set_cookie(
         key='session_id',
         value=cooke.session_id,
-        max_age=60 * 60 * 24 * 7,
+        max_age=SESSION_MAX_AGE_SECONDS,
+        expires=cooke.expires_at.replace(tzinfo=timezone.utc),
         httponly=True,
         samesite='lax',
         path='/'
@@ -31,7 +34,8 @@ def post_login(response: Response, data: SUserLogin, db: Session = Depends(get_d
     response.set_cookie(
         key='session_id',
         value=cooke.session_id,
-        max_age=60 * 60 * 24 * 7,
+        max_age=SESSION_MAX_AGE_SECONDS,
+        expires=cooke.expires_at.replace(tzinfo=timezone.utc),
         httponly=True,
         samesite='lax',
         path='/'

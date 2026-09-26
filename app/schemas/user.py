@@ -5,6 +5,7 @@ class SUserRegister(BaseModel):
     name: str
     email: str
     password: str
+    role: str = 'student'  # 'student' или 'teacher'
 
 class SUserLogin(BaseModel):
     email: str
