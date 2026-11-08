@@ -14,10 +14,15 @@ def reg_user(data: SUserRegister, db: Session) -> User:
     password = data.password.encode('utf-8')
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
     hashed_password = hashed_password.decode('utf-8')
+    role = (data.role or 'student').lower()
+    if role not in ('student', 'teacher'):
+        raise HTTPException(status_code=400, detail='Некорректная роль')
+
     db_user = User(
         name=data.name,
         email=data.email,
         password=hashed_password,
+        is_teacher=(role == 'teacher'),
     )
 
     db.add(db_user)
